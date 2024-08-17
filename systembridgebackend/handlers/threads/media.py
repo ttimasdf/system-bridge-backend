@@ -1,6 +1,7 @@
 """Media update thread handler."""
 
 from collections.abc import Awaitable, Callable
+import datetime
 import platform
 from typing import Final, override
 
@@ -20,6 +21,7 @@ class MediaUpdateThread(UpdateThread):
     ) -> None:
         """Initialise."""
         super().__init__(UPDATE_INTERVAL)
+        self._updated_callback = updated_callback
 
         if platform.system() != "Windows":
             return
@@ -29,14 +31,20 @@ class MediaUpdateThread(UpdateThread):
         )
 
         self._update_cls = Media(
-            changed_callback=updated_callback,
+            changed_callback=self._updated_callback,
             update_media_info_interval=self._update_interval,
         )
 
     @override
     async def update(self) -> None:
         """Update."""
-        if platform.system() != "Windows" or self.stopping:
+        if self.stopping:
+            return
+
+        if platform.system() != "Windows" or self._update_cls is None:
+            await self._updated_callback(
+                "media", MediaInfo(updated_at=datetime.datetime.now().timestamp())
+            )
             return
 
         await self._update_cls.update_media_info()
