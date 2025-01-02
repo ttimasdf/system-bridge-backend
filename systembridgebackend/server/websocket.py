@@ -939,16 +939,15 @@ class WebSocketHandler(Base):
 
             try:
                 self._logger.info("Updating display %d %s to %d", model.monitor_id, model.setting, model.value)
-                setting = DisplaySetting(model.setting)
-                if setting == DisplaySetting.BRIGHTNESS:
+                if model.setting == DisplaySetting.BRIGHTNESS:
                     set_brightness(model.monitor_id, model.value)
-                elif setting == DisplaySetting.CONTRAST:
+                elif model.setting == DisplaySetting.CONTRAST:
                     set_contrast(model.monitor_id, model.value)
-                elif setting == DisplaySetting.VOLUME:
+                elif model.setting == DisplaySetting.VOLUME:
                     set_volume(model.monitor_id, model.value)
-                elif setting == DisplaySetting.POWER_STATE:
+                elif model.setting == DisplaySetting.POWER_STATE:
                     set_power_state(model.monitor_id, model.value)
-                elif setting == DisplaySetting.INPUT_SOURCE:
+                elif model.setting == DisplaySetting.INPUT_SOURCE:
                     set_input_source(model.monitor_id, model.value)
                 else:
                     raise NotImplementedError(f"{setting} not implemented")
