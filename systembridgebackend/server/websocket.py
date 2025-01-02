@@ -964,7 +964,7 @@ class WebSocketHandler(Base):
                 self._logger.info("display %d updated", model.monitor_id)
             except (VCPError, NotImplementedError) as e:
                 message = f"{e.__class__.__name__}: {str(e)}"
-                self._logger.warning(message, exc_info=error)
+                self._logger.warning(message, exc_info=e)
                 await self._send_response(
                     Response(
                         id=request.id,
