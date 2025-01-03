@@ -32,6 +32,7 @@ class VCPMonitorInfo(NamedTuple):
     """
     A named tuple to hold monitor information.
     """
+    vcp_supported: bool
     brightness: int = None
     contrast: int = None
     volume: int = None
@@ -201,14 +202,14 @@ class DisplaysUpdate(ModuleUpdateBase):
                     power_state = permissive(lambda: vcp_monitor.get_power_mode().value)
                     input_source = permissive(lambda: vcp_monitor.get_input_source().value)
 
-                    return VCPMonitorInfo(brightness, contrast, volume, power_state, input_source)
+                    return VCPMonitorInfo(True, brightness, contrast, volume, power_state, input_source)
             except VCPError as e:
                 self._logger.error("Error querying Monitor %d %s through VCP: %s", index, name, str(e))
                 self.vcp_monitor_blacklist.add(name)
-                return VCPMonitorInfo()
+                return VCPMonitorInfo(False)
         else:
             self._logger.info("Skipped VCP query for blacklisted monitor %d %s", index, name)
-            return VCPMonitorInfo()
+            return VCPMonitorInfo(False)
 
     @override
     async def update_all_data(self) -> list[Display]:
@@ -231,6 +232,7 @@ class DisplaysUpdate(ModuleUpdateBase):
                     is_primary=monitor.is_primary,
                     pixel_clock=self._get_pixel_clock(str(key)),
                     refresh_rate=self.sensors_refresh_rate(str(key)),
+                    vcp_supported=vcp_info.vcp_supported,
                     brightness=vcp_info.brightness,
                     contrast=vcp_info.contrast,
                     volume=vcp_info.volume,
