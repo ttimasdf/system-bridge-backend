@@ -950,7 +950,7 @@ class WebSocketHandler(Base):
                 elif model.setting == DisplaySetting.INPUT_SOURCE:
                     set_input_source(model.monitor_id, model.value)
                 else:
-                    raise NotImplementedError(f"{setting} not implemented")
+                    raise NotImplementedError(f"{model.setting} not implemented")
 
                 await self._send_response(
                     Response(
