@@ -1,5 +1,7 @@
 """display control DDC/CI handlers."""
-from monitorcontrol.monitorcontrol import get_monitors, PowerMode, InputSource
+from monitorcontrol.monitorcontrol import get_monitors
+
+from systembridgemodels.modules.displays import InputSource, PowerMode
 
 from ..modules.displays import vcpcode_volume
 
@@ -63,7 +65,7 @@ def set_volume(
 
 def set_power_state(
     monitor_id: int,
-    power_state: int | str | PowerMode,
+    power_state: PowerMode | int | str,
 ) -> None:
     """
     Set the power state of a monitor.
@@ -80,7 +82,7 @@ def set_power_state(
 
 def set_input_source(
     monitor_id: int,
-    input_source: int | str | InputSource,
+    input_source: InputSource | int | str,
 ) -> None:
     """
     Set the input source of a monitor.
