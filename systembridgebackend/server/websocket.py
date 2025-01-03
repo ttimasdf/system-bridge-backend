@@ -960,6 +960,7 @@ class WebSocketHandler(Base):
                         data=asdict(model),
                     )
                 )
+                self._data_update.request_update_data(modules=["displays"])
                 self._logger.info("display %d updated", model.monitor_id)
             except (VCPError, NotImplementedError) as e:
                 message = f"{e.__class__.__name__}: {str(e)}"

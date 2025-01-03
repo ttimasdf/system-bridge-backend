@@ -119,9 +119,9 @@ class Server(Base):
 
         # Stop update threads
         if api_app.data_update.update_data_thread is not None:
-            api_app.data_update.update_data_thread.join()
+            api_app.data_update.update_data_thread.interrupt(timeout=4)
         if api_app.data_update.update_media_thread is not None:
-            api_app.data_update.update_media_thread.join()
+            api_app.data_update.update_media_thread.interrupt(timeout=4)
         self._logger.info("Update threads joined")
 
         # Stop all tasks
