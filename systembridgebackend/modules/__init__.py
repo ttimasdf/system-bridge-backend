@@ -90,7 +90,7 @@ class ModulesUpdate(Base):
 
     async def update_data(self, modules: list[str] | None = None) -> None:
         """Update Data."""
-        self._logger.info("Update data, modules=%s", modules)
+        self._logger.info("Update data, modules=%s", modules or 'ALL')
 
         sensors_update = SensorsUpdate()
         sensors_data = await sensors_update.update_all_data()
