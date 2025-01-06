@@ -118,10 +118,12 @@ class Server(Base):
         self._logger.info("Exiting application")
 
         # Stop update threads
-        if api_app.data_update.update_data_thread is not None:
-            api_app.data_update.update_data_thread.interrupt(timeout=4)
-        if api_app.data_update.update_media_thread is not None:
-            api_app.data_update.update_media_thread.interrupt(timeout=4)
+        for thread in (
+            api_app.data_update.update_data_thread,
+            api_app.data_update.update_media_thread,
+        ):
+            if thread is not None:
+                thread.interrupt()
         self._logger.info("Update threads joined")
 
         # Stop all tasks

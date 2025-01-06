@@ -77,16 +77,6 @@ class UpdateThread(BaseThread):
         self.interval = interval
         self._logger.info("Updated update interval to: %s", self.interval)
 
-    def interrupt(self, timeout: float | None = None):
-        """
-        Interrupt `UpdateThread` by setting the `stopping` flag.
-
-        Should be called instead of `UpdateThread.join()`.
-        """
-        self._logger.info("Interrupting %s", self.__class__.__name__)
-        self.stopping = True
-        return super().join(timeout)
-
     async def update(self) -> None:
         """The actual data/media update function, should be implemented in subclasses."""
         raise NotImplementedError
